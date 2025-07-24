@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FilmService} from '../../services/film.service';
 import {Film} from '../../models/film.model';
 
+declare const UIkit: any;
 
 @Component({
   selector: 'app-film-list',
@@ -10,23 +11,38 @@ import {Film} from '../../models/film.model';
 })
 export class FilmListComponent implements OnInit {
   films: Film[] = [];
+  isLoading: boolean = false;
 
   constructor(private filmService: FilmService) {}
 
+
   ngOnInit(): void {
-    // On récupere les films par le service Film + méthode getFilms
+    // Affiche le loader UIkit
+    this.isLoading = true;
+    UIkit.modal("#modal-loading").show();
+
+    // On récupère les films via le service
     this.filmService.getFilms().subscribe({
-      // dans le next on recupere le type que nous avons recuperé dans le service
       next: (response) => {
-        console.log('Films reçus:', response.data);
-        console.log(response.code);
-        console.log(response.data);
-        console.log(response.message);
-        this.films = response.data;
+        // Attend 1 seconde avant de cacher le loader
+        setTimeout(() => {
+          console.log('Films reçus:', response.data);
+          console.log(response.code);
+          console.log(response.message);
+          this.films = response.data;
+          this.isLoading = false;
+          UIkit.modal("#modal-loading").hide(); // Ferme le loader
+        }, 1000);
       },
-      error: (err) => console.error('Erreur API:', err)
+      error: (err) => {
+        // En cas d’erreur, on affiche dans la console puis cache le loader
+        console.error('Erreur API:', err);
+        this.isLoading = false;
+        UIkit.modal("#modal-loading").hide();
+      }
     });
   }
+
 // plus tard on peut faire refactor de cette méthode pour le reutiliser
   getStarsArray(): number[] {
     return [1, 2, 3, 4, 5];
