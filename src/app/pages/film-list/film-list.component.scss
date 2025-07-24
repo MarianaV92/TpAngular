@@ -1,0 +1,41 @@
+.film-card {
+  position: relative;
+  min-height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.film-content {
+  position: relative;
+  z-index: 2;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.film-content h3, .film-content p {
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.star {
+  position: relative;
+  color: lightgray;
+  font-size: 24px;
+  display: inline-block;
+  --fill: 0%;
+}
+
+.star::before {
+  content: '★';
+  position: absolute;
+  top: 0; left: 0;
+  width: var(--fill);
+  overflow: hidden;
+  white-space: nowrap;
+  color: gold;
+}

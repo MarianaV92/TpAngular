@@ -1,0 +1,33 @@
+<h1>Films</h1>
+
+<ul class="uk-list">
+  @for (film of films; track film.id) {
+    <li
+      class="film-card"
+      [style.backgroundImage]="'url(' + film.cover + ')'">
+      <div class="overlay"></div>
+      <div class="film-content">
+        <h3>{{ film.title }}</h3>
+        <p>{{ film.year }}, {{ film.author }}</p>
+        <p>{{ film.duration }} min</p>
+
+        <div class="rating">
+          @for (star of getStarsArray(); track star) {
+            <span
+              class="star"
+              [style.--fill]="
+        film.rating >= star ? '100%' :
+        film.rating + 1 > star ? ((film.rating - (star - 1)) * 100) + '%' : '0%'
+      "
+            >
+      ★
+    </span>
+          }
+        </div>
+
+        <i id="italic">{{ film.genre }}</i>
+        <p>{{ film.synopsis }}</p>
+      </div>
+    </li>
+  }
+</ul>
