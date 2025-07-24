@@ -1,18 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {FilmService} from '../../services/film.service';
+import {Film} from '../../models/film.model';
 
-interface Film {
-  id: number;
-  slug: string;
-  title: string;
-  year: number;
-  author: string;
-  duration: number;
-  genre: string;
-  synopsis: string;
-  cover: string;
-  rating: number;
-}
 
 @Component({
   selector: 'app-film-list',
@@ -22,18 +11,23 @@ interface Film {
 export class FilmListComponent implements OnInit {
   films: Film[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private filmService: FilmService) {}
 
   ngOnInit(): void {
-    this.http.get<{ code: string; message: string; data: Film[] }>('http://localhost:3000/movies').subscribe({
+    // On récupere les films par le service Film + méthode getFilms
+    this.filmService.getFilms().subscribe({
+      // dans le next on recupere le type que nous avons recuperé dans le service
       next: (response) => {
         console.log('Films reçus:', response.data);
+        console.log(response.code);
+        console.log(response.data);
+        console.log(response.message);
         this.films = response.data;
       },
       error: (err) => console.error('Erreur API:', err)
     });
   }
-
+// plus tard on peut faire refactor de cette méthode pour le reutiliser
   getStarsArray(): number[] {
     return [1, 2, 3, 4, 5];
   }
