@@ -8,13 +8,18 @@ import { provideHttpClient } from '@angular/common/http';
 
 
 import { routes } from './app.routes';
+import { provideTranslateService } from '@ngx-translate/core';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient()
+    provideHttpClient(),
+    provideTranslateService({
+      defaultLanguage: 'en'
+    })
 
   ]
 };
